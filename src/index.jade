@@ -6,10 +6,16 @@ html
     script.
       // inject:loaders
       // inject:end
-      $script([
-        'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js',
-        'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-route.min.js',
-        'app.js'
-      ], function () {
-        angular.bootstrap(document, ['edokiz']);
+      var deps = {
+        'angular': ['https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js', '/vendor/angular/angular.min.js'],
+        'angular-route': ['https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-route.min.js', '/vendor/angular-route/angular-route.min.js'],
+        'app': ['/app.js']
+      };
+      for(dep in deps) {
+        $script(deps[dep][0], dep);
+      }
+      $script.ready(Object.keys(deps), function () {
+        console.log('all ready');
+      }, function (depsNotFound) {
+        console.log('not found', depsNotFound);
       });
