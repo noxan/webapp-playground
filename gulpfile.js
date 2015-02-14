@@ -21,7 +21,8 @@ gulp.task('templates', function () {
     .pipe(plugins.plumber())
     .pipe(plugins.jade())
     .pipe(plugins.inject(gulp.src(config.loaders), {
-      starttag: '<!-- inject:loaders -->',
+      starttag: '// inject:loaders',
+      endtag: '// inject:end',
       transform: function (filePath, file) {
         // return file contents as string
         return file.contents.toString('utf8')
