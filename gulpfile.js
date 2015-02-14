@@ -11,8 +11,16 @@ var browserified = transform(function(filename) {
 
 var config = {
   scripts: ['./src/app.js'],
+  templates: ['./src/index.jade'],
   dist: './dist/'
 };
+
+gulp.task('templates', function () {
+  gulp.src(config.templates)
+    .pipe(plugins.plumber())
+    .pipe(plugins.jade())
+    .pipe(gulp.dest(config.dist));
+});
 
 gulp.task('scripts', function () {
   gulp.src(config.scripts)
