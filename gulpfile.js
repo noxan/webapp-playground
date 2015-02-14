@@ -29,5 +29,11 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest(config.dist));
 });
 
+gulp.task('serve', function () {
+  plugins.connect.server({
+    root: config.dist
+  });
+});
+
 
 gulp.task('default', ['scripts']);
