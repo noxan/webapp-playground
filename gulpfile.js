@@ -36,4 +36,4 @@ gulp.task('serve', function () {
 });
 
 
-gulp.task('default', ['scripts']);
+gulp.task('default', ['scripts', 'templates', 'serve']);
