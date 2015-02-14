@@ -1,0 +1,11 @@
+{
+  "name": "edokiz",
+  "version": "0.1.0",
+  "description": "Optimizing my JavaScript build process and dependency management.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Richard <noxan@byteweaver.org>",
+  "license": "MIT"
+}
