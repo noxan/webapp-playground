@@ -7,5 +7,25 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Richard <noxan@byteweaver.org>",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noxan/edokiz.git"
+  },
+  "keywords": [
+    "javascript",
+    "demo",
+    "project",
+    "build",
+    "process",
+    "dependency",
+    "management",
+    "optimization",
+    "gulp",
+    "angular"
+  ],
+  "bugs": {
+    "url": "https://github.com/noxan/edokiz/issues"
+  },
+  "homepage": "https://github.com/noxan/edokiz"
 }
