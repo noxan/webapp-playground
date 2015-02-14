@@ -10,6 +10,7 @@ var browserified = transform(function(filename) {
 });
 
 var config = {
+  loaders: ['./dist/vendor/angular-loader/angular-loader.js', './dist/vendor/script.js/dist/script.min.js'],
   scripts: ['./src/app.js'],
   templates: ['./src/index.jade'],
   dist: './dist/'
@@ -19,6 +20,13 @@ gulp.task('templates', function () {
   gulp.src(config.templates)
     .pipe(plugins.plumber())
     .pipe(plugins.jade())
+    .pipe(plugins.inject(gulp.src(config.loaders), {
+      starttag: '<!-- inject:loaders -->',
+      transform: function (filePath, file) {
+        // return file contents as string
+        return file.contents.toString('utf8')
+      }
+    }))
     .pipe(gulp.dest(config.dist));
 });
 
