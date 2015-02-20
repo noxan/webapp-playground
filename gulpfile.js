@@ -10,8 +10,8 @@ var browserified = transform(function(filename) {
 });
 
 var config = {
-  loaders: ['./dist/vendor/angular-loader/angular-loader.js', './dist/vendor/script.js/dist/script.min.js'],
-  scripts: ['./src/app.js'],
+  loaders: ['./dist/loader.js'],
+  scripts: ['./src/app.js', './src/loader.js'],
   templates: ['./src/index.jade'],
   dist: './dist/'
 };
