@@ -38,11 +38,13 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest(config.dist));
 });
 
-gulp.task('serve', function () {
+gulp.task('build', ['scripts', 'templates']);
+
+gulp.task('serve', ['build'], function () {
   plugins.connect.server({
     root: config.dist
   });
 });
 
 
-gulp.task('default', ['scripts', 'templates', 'serve']);
+gulp.task('default', ['serve']);
