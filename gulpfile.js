@@ -15,9 +15,17 @@ var browserified = transform(function (filename) {
 var config = {
   loaders: ['./dist/loader.js'],
   scripts: ['./src/app.js', './src/loader.js'],
+  styles: ['./src/styles.styl'],
   templates: ['./src/index.jade'],
   dist: './dist/'
 };
+
+gulp.task('styles', function () {
+  return gulp.src(config.styles)
+    .pipe(plugins.plumber())
+    .pipe(plugins.stylus())
+    .pipe(gulp.dest(config.dist));
+});
 
 gulp.task('templates', function () {
   gulp.src(config.templates)
@@ -41,7 +49,7 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest(config.dist));
 });
 
-gulp.task('build', ['scripts', 'templates']);
+gulp.task('build', ['scripts', 'styles', 'templates']);
 
 gulp.task('serve', ['build'], function () {
   plugins.connect.server({
