@@ -3,6 +3,7 @@
 
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
+var compression = require('compression');
 var transform = require('vinyl-transform');
 var browserify = require('browserify');
 
@@ -69,7 +70,10 @@ gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
 
 gulp.task('serve', ['build'], function () {
   plugins.connect.server({
-    root: config.dist
+    root: config.dist,
+    middleware: function(connect, opt) {
+      return [compression()];
+    }
   });
 });
 
