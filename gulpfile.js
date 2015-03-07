@@ -17,6 +17,7 @@ var config = {
   scripts: ['./src/app.js', './src/loader.js'],
   styles: ['./src/styles.styl'],
   templates: ['./src/index.jade'],
+  partials: ['./src/partials/**/*.jade'],
   dist: './dist/'
 };
 
@@ -46,6 +47,15 @@ gulp.task('templates', function () {
     .pipe(gulp.dest(config.dist));
 });
 
+gulp.task('partials', function () {
+  gulp.src(config.partials, {base: './src/'})
+    .pipe(plugins.plumber())
+    .pipe(plugins.jade())
+    .pipe(plugins.minifyHtml())
+    .pipe(plugins.size({showFiles: true}))
+    .pipe(gulp.dest(config.dist));
+});
+
 gulp.task('scripts', function () {
   gulp.src(config.scripts)
     .pipe(plugins.plumber())
@@ -55,7 +65,7 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest(config.dist));
 });
 
-gulp.task('build', ['scripts', 'styles', 'templates']);
+gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
 
 gulp.task('serve', ['build'], function () {
   plugins.connect.server({
