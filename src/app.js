@@ -1,4 +1,12 @@
 /*global angular:true*/
 var app = angular.module('edokiz', ['ngRoute']);
 
-console.log(app);
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+  $routeProvider.when('/', {
+    templateUrl: 'partials/demo.html'
+  }).otherwise({
+    redirectTo: '/'
+  });
+
+  $locationProvider.html5Mode(false);
+}]);
