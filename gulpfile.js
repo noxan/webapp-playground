@@ -24,6 +24,7 @@ gulp.task('styles', function () {
   return gulp.src(config.styles)
     .pipe(plugins.plumber())
     .pipe(plugins.stylus())
+    .pipe(plugins.size({showFiles: true}))
     .pipe(gulp.dest(config.dist));
 });
 
@@ -39,6 +40,7 @@ gulp.task('templates', function () {
         return file.contents.toString('utf8');
       }
     }))
+    .pipe(plugins.size({showFiles: true}))
     .pipe(gulp.dest(config.dist));
 });
 
@@ -46,6 +48,7 @@ gulp.task('scripts', function () {
   gulp.src(config.scripts)
     .pipe(plugins.plumber())
     .pipe(browserified)
+    .pipe(plugins.size({showFiles: true}))
     .pipe(gulp.dest(config.dist));
 });
 
