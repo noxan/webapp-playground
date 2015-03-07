@@ -1,10 +1,13 @@
+/*jslint node: true*/
+'use strict';
+
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var transform = require('vinyl-transform');
 var browserify = require('browserify');
 
 
-var browserified = transform(function(filename) {
+var browserified = transform(function (filename) {
   var b = browserify(filename);
   return b.bundle();
 });
@@ -25,7 +28,7 @@ gulp.task('templates', function () {
       endtag: '// inject:end',
       transform: function (filePath, file) {
         // return file contents as string
-        return file.contents.toString('utf8')
+        return file.contents.toString('utf8');
       }
     }))
     .pipe(gulp.dest(config.dist));
