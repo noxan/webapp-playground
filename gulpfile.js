@@ -55,6 +55,17 @@ var createBundle = function (options) {
   rebundle();
 };
 
+gulp.task('scripts', function () {
+  config.scripts.forEach(function (bundle) {
+    createBundle({
+      input: bundle,
+      output: bundle,
+      destination: config.dist,
+      extensions: ['.js']
+    });
+  });
+});
+
 gulp.task('styles', function () {
   return gulp.src(config.styles)
     .pipe(plugins.plumber())
@@ -88,17 +99,6 @@ gulp.task('partials', function () {
     .pipe(plugins.minifyHtml())
     .pipe(plugins.size({showFiles: true}))
     .pipe(gulp.dest(config.dist));
-});
-
-gulp.task('scripts', function () {
-  config.scripts.forEach(function (bundle) {
-    createBundle({
-      input: bundle,
-      output: bundle,
-      destination: config.dist,
-      extensions: ['.js']
-    });
-  });
 });
 
 gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
