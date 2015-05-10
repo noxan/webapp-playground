@@ -5,7 +5,9 @@ var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var compression = require('compression');
 var transform = require('vinyl-transform');
+var source = require('vinyl-source-stream');
 var browserify = require('browserify');
+var watchify = require('watchify');
 
 
 var browserified = transform(function (filename) {
@@ -14,12 +16,43 @@ var browserified = transform(function (filename) {
 });
 
 var config = {
+  basedir: __dirname + '/src/',
   loaders: ['./dist/loader.js'],
-  scripts: ['./src/app.js', './src/loader.js'],
+  scripts: ['./app.js', './loader.js'],
   styles: ['./src/styles.styl'],
   templates: ['./src/index.jade'],
   partials: ['./src/partials/**/*.jade'],
-  dist: './dist/'
+  dist: './dist/',
+  watch: true
+};
+
+var createBundle = function (options) {
+  var bundler = browserify({
+    entries: options.input,
+    extensions: options.extensions,
+    debug: true,
+    cache: {},
+    packageCache: {},
+    basedir: config.basedir
+  });
+
+  if(config.watch) {
+    bundler = watchify(bundler);
+  }
+
+  var rebundle = function () {
+    bundler.bundle().on('error', function (err) {
+      console.log(err.message);
+    }).pipe(source(options.output)).pipe(gulp.dest(options.destination)).on('end', function () {
+      console.log(options.output, 'was browserified.');
+    });
+  };
+
+  if (config.watch) {
+    bundler.on('update', rebundle);
+  }
+
+  rebundle();
 };
 
 gulp.task('styles', function () {
@@ -58,12 +91,14 @@ gulp.task('partials', function () {
 });
 
 gulp.task('scripts', function () {
-  gulp.src(config.scripts)
-    .pipe(plugins.plumber())
-    .pipe(browserified)
-    .pipe(plugins.uglify())
-    .pipe(plugins.size({showFiles: true}))
-    .pipe(gulp.dest(config.dist));
+  config.scripts.forEach(function (bundle) {
+    createBundle({
+      input: bundle,
+      output: bundle,
+      destination: config.dist,
+      extensions: ['.js']
+    });
+  });
 });
 
 gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
