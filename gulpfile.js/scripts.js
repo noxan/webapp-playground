@@ -27,6 +27,8 @@ module.exports = function (gulp, plugins, config) {
           plugins.util.log(plugins.util.colors.red(err.message));
         })
         .pipe(source(path.relative(config.basedir, filename)))
+        .pipe(buffer())
+        .pipe(plugins.uglify())
         .pipe(gulp.dest(config.dist))
         .pipe(plugins.connect.reload())
         .on('end', function () {
