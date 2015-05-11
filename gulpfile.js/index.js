@@ -3,7 +3,6 @@
 
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
-var compression = require('compression');
 var config = require('./config');
 
 
@@ -38,14 +37,7 @@ gulp.task('partials', function () {
 
 gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
 
-gulp.task('serve', ['build'], function () {
-  plugins.connect.server({
-    root: config.dist,
-    middleware: function (connect, opt) {
-      return [compression()];
-    }
-  });
-});
+gulp.task('serve', ['build'], require('./serve')(gulp, plugins, config));
 
 
 gulp.task('set-watch', function () {
