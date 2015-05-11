@@ -21,7 +21,7 @@ module.exports = function (gulp, plugins, config) {
       bundler = watchify(bundler);
     }
 
-    var build = function () {
+    function build() {
       return bundler.bundle()
         .on('error', function (err) {
           plugins.util.log(plugins.util.colors.red(err.message));
@@ -34,7 +34,7 @@ module.exports = function (gulp, plugins, config) {
         .on('end', function () {
           plugins.util.log("Script '" + plugins.util.colors.cyan(path.basename(filename)) + "' was browserified.");
         });
-    };
+    }
 
     if (config.watch) {
       bundler.on('update', build);
