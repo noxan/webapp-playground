@@ -9,10 +9,6 @@ var bundle = require('./scripts-bundle');
 var config = require('./config');
 
 
-gulp.task('set-watch', function () {
-  config.watch = true;
-});
-
 gulp.task('scripts', function () {
   return es.concat.apply(null, config.scripts.map(function (filename) {
     return bundle(filename);
@@ -65,7 +61,18 @@ gulp.task('serve', ['build'], function () {
   });
 });
 
-gulp.task('watch', ['set-watch', 'build']);
+
+gulp.task('set-watch', function () {
+  config.watch = true;
+});
+
+gulp.task('watch', ['set-watch', 'build'], function () {
+  // watch other targets (except for scripts with is handled by watchify)
+  Object.keys(config.watchFiles).forEach(function (key) {
+    gulp.watch(config.watchFiles[key], [key]);
+  });
+});
+
 
 gulp.task('default', ['watch', 'serve']);
 

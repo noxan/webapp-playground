@@ -6,5 +6,10 @@
   "templates": ["./src/index.jade"],
   "partials": ["./src/partials/**/*.jade"],
   "dist": "./dist/",
-  "watch": false
+  "watch": false,
+  "watchFiles": {
+    "styles": ["./src/**/*.styl"],
+    "templates": ["./src/index.jade"],
+    "partials": ["./src/partials/**/*.jade"]
+  }
 }
