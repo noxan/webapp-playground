@@ -8,6 +8,7 @@ var transform = require('vinyl-transform');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var path = require('path');
+var es = require('event-stream');
 
 var createBundle = require('./browserify').createBundle;
 var config = require('./config');
@@ -37,9 +38,9 @@ var bundle = function (filename) {
 };
 
 gulp.task('scripts', function () {
-  config.scripts.forEach(function (filename) {
-    bundle(filename);
-  });
+  return es.concat.apply(null, config.scripts.map(function (filename) {
+    return bundle(filename);
+  }));
 });
 
 gulp.task('styles', function () {
