@@ -16,16 +16,7 @@ var browserified = transform(function (filename) {
   return b.bundle();
 });
 
-var config = {
-  basedir: __dirname + '/src/',
-  loaders: ['./dist/loader.js'],
-  scripts: ['./app.js', './loader.js'],
-  styles: ['./src/styles.styl'],
-  templates: ['./src/index.jade'],
-  partials: ['./src/partials/**/*.jade'],
-  dist: './dist/',
-  watch: false
-};
+var config = require('./config');
 
 var createBundle = function (options) {
   var bundler = browserify({
