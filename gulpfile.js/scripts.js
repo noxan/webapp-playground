@@ -29,6 +29,7 @@ module.exports = function (gulp, plugins, config) {
         .pipe(source(path.relative(config.basedir, filename)))
         .pipe(buffer())
         .pipe(plugins.uglify())
+        .pipe(plugins.size({showFiles: true}))
         .pipe(gulp.dest(config.dist))
         .pipe(plugins.connect.reload())
         .on('end', function () {
