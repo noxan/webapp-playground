@@ -8,23 +8,7 @@ var config = require('./config');
 
 gulp.task('scripts', require('./scripts')(gulp, plugins, config));
 gulp.task('styles', require('./styles')(gulp, plugins, config));
-
-gulp.task('templates', function () {
-  gulp.src(config.templates)
-    .pipe(plugins.plumber())
-    .pipe(plugins.jade())
-    .pipe(plugins.inject(gulp.src(config.loaders), {
-      starttag: '// inject:loaders',
-      endtag: '// inject:end',
-      transform: function (filePath, file) {
-        // return file contents as string
-        return file.contents.toString('utf8');
-      }
-    }))
-    .pipe(plugins.minifyHtml())
-    .pipe(plugins.size({showFiles: true}))
-    .pipe(gulp.dest(config.dist));
-});
+gulp.task('templates', require('./templates')(gulp, plugins, config));
 
 gulp.task('partials', function () {
   gulp.src(config.partials, {base: './src/'})
