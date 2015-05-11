@@ -9,7 +9,7 @@ var watchify = require('watchify');
 
 
 module.exports = function (gulp, plugins, config) {
-  var bundler = function (options) {
+  function bundler(options) {
     return transform(function (filename) {
       var b = browserify(filename, options);
       if (config.watch) {
@@ -21,18 +21,18 @@ module.exports = function (gulp, plugins, config) {
       });
       return b.bundle();
     });
-  };
+  }
 
-  var bundle = function (filename) {
+  function bundle(filename) {
     return gulp.src(filename)
       .pipe(plugins.plumber())
       .pipe(bundler(watchify.args))
       .pipe(gulp.dest(config.dist));
-  };
+  }
 
   return function () {
     return es.concat.apply(null, config.scripts.map(function (filename) {
       return bundle(filename);
     }));
-  }
+  };
 };
