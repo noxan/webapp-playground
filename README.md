@@ -5,7 +5,7 @@ Optimizing my JavaScript build process and dependency management.
 ## Features
 
 * Full stack gulp pipeline
-* Auto rebuild and live-reload
+* Auto rebuild and live-reload (error resistant!)
 * Async script and stylesheet loaders
 * Package management
 * Optimized following rules of Google PageSpeed
