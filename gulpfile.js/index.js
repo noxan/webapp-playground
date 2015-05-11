@@ -8,15 +8,7 @@ var config = require('./config');
 
 
 gulp.task('scripts', require('./scripts')(gulp, plugins, config));
-
-gulp.task('styles', function () {
-  return gulp.src(config.styles)
-    .pipe(plugins.plumber())
-    .pipe(plugins.stylus())
-    .pipe(plugins.minifyCss())
-    .pipe(plugins.size({showFiles: true}))
-    .pipe(gulp.dest(config.dist));
-});
+gulp.task('styles', require('./styles')(gulp, plugins, config));
 
 gulp.task('templates', function () {
   gulp.src(config.templates)
