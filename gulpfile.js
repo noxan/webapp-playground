@@ -24,7 +24,7 @@ var config = {
   templates: ['./src/index.jade'],
   partials: ['./src/partials/**/*.jade'],
   dist: './dist/',
-  watch: true
+  watch: false
 };
 
 var createBundle = function (options) {
@@ -55,6 +55,10 @@ var createBundle = function (options) {
 
   rebundle();
 };
+
+gulp.task('set-watch', function () {
+  config.watch = true;
+});
 
 gulp.task('scripts', function () {
   config.scripts.forEach(function (bundle) {
@@ -113,8 +117,9 @@ gulp.task('serve', ['build'], function () {
   });
 });
 
+gulp.task('watch', ['set-watch', 'build']);
 
-gulp.task('default', ['serve']);
+gulp.task('default', ['watch', 'serve']);
 
 
 gulp.task('jslint', function () {
