@@ -8,7 +8,7 @@ module.exports = function (gulp, plugins, config) {
   return function () {
     plugins.connect.server({
       root: config.dist,
-      middleware: function (connect, opt) {
+      middleware: function () {
         return [compression()];
       }
     });
