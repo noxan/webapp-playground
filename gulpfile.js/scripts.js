@@ -2,34 +2,45 @@
 'use strict';
 
 var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
 var es = require('event-stream');
 var path = require('path');
-var transform = require('vinyl-transform');
+var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 
 
 module.exports = function (gulp, plugins, config) {
-  function bundler(options) {
-    return transform(function (filename) {
-      var b = browserify(filename, options);
-      if (config.watch) {
-        b = watchify(b);
-        b.on('update', bundle.bind(null, filename));
-      }
-      b.on('bundle', function () {
-        plugins.util.log("Script '" + plugins.util.colors.cyan(path.basename(filename)) + "' was browserified.");
-      });
-      return b.bundle();
-    });
-  }
-
   function bundle(filename) {
-    return gulp.src(filename)
-      .pipe(plugins.plumber())
-      .pipe(bundler(watchify.args))
-      .pipe(plugins.uglify())
-      .pipe(gulp.dest(config.dist))
-      .pipe(plugins.connect.reload());
+    var bundler = browserify({
+      entries: [filename],
+      cache: {},
+      packageCache: {}
+    });
+
+    if (config.watch) {
+      bundler = watchify(bundler);
+    }
+
+    var build = function () {
+      return bundler.bundle()
+        .on('error', function (err) {
+          plugins.util.log(plugins.util.colors.red(err.message));
+        })
+        .pipe(source(path.relative(config.basedir, filename)))
+        .pipe(buffer())
+        .pipe(plugins.uglify())
+        .pipe(gulp.dest(config.dist))
+        .pipe(plugins.connect.reload())
+        .on('end', function () {
+          plugins.util.log("Script '" + plugins.util.colors.cyan(path.basename(filename)) + "' was browserified.");
+        });
+    };
+
+    if (config.watch) {
+      bundler.on('update', build);
+    }
+
+    return build();
   }
 
   return function () {
