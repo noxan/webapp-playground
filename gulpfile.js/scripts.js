@@ -27,6 +27,7 @@ module.exports = function (gulp, plugins, config) {
     return gulp.src(filename)
       .pipe(plugins.plumber())
       .pipe(bundler(watchify.args))
+      .pipe(plugins.uglify())
       .pipe(gulp.dest(config.dist));
   }
 
