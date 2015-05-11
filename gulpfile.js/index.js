@@ -16,16 +16,7 @@ gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
 gulp.task('serve', ['build'], require('./serve')(gulp, plugins, config));
 
 
-gulp.task('set-watch', function () {
-  config.watch = true;
-});
-
-gulp.task('watch', ['set-watch', 'build'], function () {
-  // watch other targets (except for scripts with is handled by watchify)
-  Object.keys(config.watchFiles).forEach(function (key) {
-    gulp.watch(config.watchFiles[key], [key]);
-  });
-});
+gulp.task('watch', ['set-watch', 'build'], require('./watch')(gulp, plugins, config));
 
 
 gulp.task('default', ['watch', 'serve']);
