@@ -1,3 +1,6 @@
+/*jslint node: true*/
+'use strict';
+
 var browserify = require('browserify');
 var es = require('event-stream');
 var path = require('path');
@@ -5,7 +8,7 @@ var transform = require('vinyl-transform');
 var watchify = require('watchify');
 
 
-var scriptsTask = function (gulp, plugins, config) {
+module.exports = function (gulp, plugins, config) {
   var bundler = function (options) {
     return transform(function (filename) {
       var b = browserify(filename, options);
@@ -33,5 +36,3 @@ var scriptsTask = function (gulp, plugins, config) {
     }));
   }
 };
-
-module.exports = scriptsTask;
