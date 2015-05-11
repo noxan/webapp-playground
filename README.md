@@ -20,4 +20,4 @@ Optimizing my JavaScript build process and dependency management.
 
 ## Next steps
 
-See issues for next improvements.
+See [issues](https://github.com/noxan/webapp-playground/issues) for next improvements.
