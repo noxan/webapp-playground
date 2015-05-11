@@ -12,4 +12,4 @@ module.exports = function (gulp, plugins, config) {
       gulp.watch(config.watchFiles[key], [key]);
     });
   };
-}
+};
