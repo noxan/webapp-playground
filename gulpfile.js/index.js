@@ -9,15 +9,7 @@ var config = require('./config');
 gulp.task('scripts', require('./scripts')(gulp, plugins, config));
 gulp.task('styles', require('./styles')(gulp, plugins, config));
 gulp.task('templates', require('./templates')(gulp, plugins, config));
-
-gulp.task('partials', function () {
-  gulp.src(config.partials, {base: './src/'})
-    .pipe(plugins.plumber())
-    .pipe(plugins.jade())
-    .pipe(plugins.minifyHtml())
-    .pipe(plugins.size({showFiles: true}))
-    .pipe(gulp.dest(config.dist));
-});
+gulp.task('partials', require('./partials')(gulp, plugins, config));
 
 gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
 
