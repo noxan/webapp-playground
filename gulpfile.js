@@ -8,6 +8,7 @@ var transform = require('vinyl-transform');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var watchify = require('watchify');
+var path = require('path');
 
 
 var browserified = transform(function (filename) {
@@ -44,7 +45,7 @@ var createBundle = function (options) {
     bundler.bundle().on('error', function (err) {
       console.log(err.message);
     }).pipe(source(options.output)).pipe(gulp.dest(options.destination)).on('end', function () {
-      plugins.util.log(plugins.util.colors.cyan(options.output), 'was browserified.');
+      plugins.util.log("Script '" + plugins.util.colors.cyan(path.basename(options.output)) + "' was browserified.");
     });
   };
 
