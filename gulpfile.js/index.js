@@ -4,71 +4,15 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var compression = require('compression');
-var transform = require('vinyl-transform');
-var source = require('vinyl-source-stream');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var path = require('path');
+var es = require('event-stream');
+var bundle = require('./scripts-bundle');
+var config = require('./config');
 
-
-var browserified = transform(function (filename) {
-  var b = browserify(filename);
-  return b.bundle();
-});
-
-var config = {
-  basedir: __dirname + '/src/',
-  loaders: ['./dist/loader.js'],
-  scripts: ['./app.js', './loader.js'],
-  styles: ['./src/styles.styl'],
-  templates: ['./src/index.jade'],
-  partials: ['./src/partials/**/*.jade'],
-  dist: './dist/',
-  watch: false
-};
-
-var createBundle = function (options) {
-  var bundler = browserify({
-    entries: options.input,
-    extensions: options.extensions,
-    debug: true,
-    cache: {},
-    packageCache: {},
-    basedir: config.basedir
-  });
-
-  if(config.watch) {
-    bundler = watchify(bundler);
-  }
-
-  var rebundle = function () {
-    bundler.bundle().on('error', function (err) {
-      console.log(err.message);
-    }).pipe(source(options.output)).pipe(gulp.dest(options.destination)).on('end', function () {
-      plugins.util.log("Script '" + plugins.util.colors.cyan(path.basename(options.output)) + "' was browserified.");
-    });
-  };
-
-  if (config.watch) {
-    bundler.on('update', rebundle);
-  }
-
-  rebundle();
-};
-
-gulp.task('set-watch', function () {
-  config.watch = true;
-});
 
 gulp.task('scripts', function () {
-  config.scripts.forEach(function (bundle) {
-    createBundle({
-      input: bundle,
-      output: bundle,
-      destination: config.dist,
-      extensions: ['.js']
-    });
-  });
+  return es.concat.apply(null, config.scripts.map(function (filename) {
+    return bundle(filename);
+  }));
 });
 
 gulp.task('styles', function () {
@@ -111,19 +55,30 @@ gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
 gulp.task('serve', ['build'], function () {
   plugins.connect.server({
     root: config.dist,
-    middleware: function(connect, opt) {
+    middleware: function (connect, opt) {
       return [compression()];
     }
   });
 });
 
-gulp.task('watch', ['set-watch', 'build']);
+
+gulp.task('set-watch', function () {
+  config.watch = true;
+});
+
+gulp.task('watch', ['set-watch', 'build'], function () {
+  // watch other targets (except for scripts with is handled by watchify)
+  Object.keys(config.watchFiles).forEach(function (key) {
+    gulp.watch(config.watchFiles[key], [key]);
+  });
+});
+
 
 gulp.task('default', ['watch', 'serve']);
 
 
 gulp.task('jslint', function () {
-  return gulp.src(['./src/**/*.js', 'gulpfile.js'])
+  return gulp.src(['src/**/*.js', 'gulpfile.js/**/*.js'])
     .pipe(plugins.plumber())
     .pipe(plugins.jslintSimple.run({
       indent: 2
