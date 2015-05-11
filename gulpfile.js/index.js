@@ -4,38 +4,14 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var compression = require('compression');
-var transform = require('vinyl-transform');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var path = require('path');
 var es = require('event-stream');
-
-var createBundle = require('./browserify').createBundle;
+var bundle = require('./scripts-bundle');
 var config = require('./config');
 
 
 gulp.task('set-watch', function () {
   config.watch = true;
 });
-
-var bundler = function (options) {
-  return transform(function (filename) {
-    var b = browserify(filename, options);
-    if (config.watch) {
-      b = watchify(b);
-      b.on('update', bundle.bind(null, filename));
-    }
-    b.on('bundle', function () {
-      plugins.util.log("Script '" + plugins.util.colors.cyan(path.basename(filename)) + "' was browserified.");
-    });
-    return b.bundle();
-  });
-};
-var bundle = function (filename) {
-  return gulp.src(filename)
-    .pipe(bundler(watchify.args))
-    .pipe(gulp.dest(config.dist));
-};
 
 gulp.task('scripts', function () {
   return es.concat.apply(null, config.scripts.map(function (filename) {
