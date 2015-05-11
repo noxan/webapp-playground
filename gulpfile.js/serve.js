@@ -10,7 +10,8 @@ module.exports = function (gulp, plugins, config) {
       root: config.dist,
       middleware: function () {
         return [compression()];
-      }
+      },
+      livereload: true
     });
   };
 };
