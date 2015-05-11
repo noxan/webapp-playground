@@ -28,7 +28,8 @@ module.exports = function (gulp, plugins, config) {
       .pipe(plugins.plumber())
       .pipe(bundler(watchify.args))
       .pipe(plugins.uglify())
-      .pipe(gulp.dest(config.dist));
+      .pipe(gulp.dest(config.dist))
+      .pipe(plugins.connect.reload());
   }
 
   return function () {

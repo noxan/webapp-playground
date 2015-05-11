@@ -8,6 +8,7 @@ module.exports = function (gulp, plugins, config) {
       .pipe(plugins.jade())
       .pipe(plugins.minifyHtml())
       .pipe(plugins.size({showFiles: true}))
-      .pipe(gulp.dest(config.dist));
+      .pipe(gulp.dest(config.dist))
+      .pipe(plugins.connect.reload());
   };
 };

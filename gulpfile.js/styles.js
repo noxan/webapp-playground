@@ -8,6 +8,7 @@ module.exports = function (gulp, plugins, config) {
       .pipe(plugins.stylus())
       .pipe(plugins.minifyCss())
       .pipe(plugins.size({showFiles: true}))
-      .pipe(gulp.dest(config.dist));
+      .pipe(gulp.dest(config.dist))
+      .pipe(plugins.connect.reload());
   };
 };
