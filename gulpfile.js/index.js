@@ -4,19 +4,13 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var compression = require('compression');
-var transform = require('vinyl-transform');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var path = require('path');
 
-
-var browserified = transform(function (filename) {
-  var b = browserify(filename);
-  return b.bundle();
-});
-
 var config = require('./config');
+
 
 var createBundle = function (options) {
   var bundler = browserify({
