@@ -22,6 +22,7 @@ var bundler = function (options) {
 };
 var bundle = function (filename) {
   return gulp.src(filename)
+    .pipe(plugins.plumber())
     .pipe(bundler(watchify.args))
     .pipe(gulp.dest(config.dist));
 };
