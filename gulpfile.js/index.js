@@ -78,7 +78,7 @@ gulp.task('default', ['watch', 'serve']);
 
 
 gulp.task('jslint', function () {
-  return gulp.src(['./src/**/*.js', 'gulpfile.js'])
+  return gulp.src(['src/**/*.js', 'gulpfile.js/**/*.js'])
     .pipe(plugins.plumber())
     .pipe(plugins.jslintSimple.run({
       indent: 2
