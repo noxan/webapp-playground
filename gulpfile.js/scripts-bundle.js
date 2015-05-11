@@ -1,3 +1,6 @@
+/*jslint node: true*/
+'use strict';
+
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var browserify = require('browserify');
@@ -20,6 +23,7 @@ var bundler = function (options) {
     return b.bundle();
   });
 };
+
 var bundle = function (filename) {
   return gulp.src(filename)
     .pipe(plugins.plumber())
