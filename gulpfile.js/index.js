@@ -55,7 +55,7 @@ gulp.task('build', ['scripts', 'styles', 'templates', 'partials']);
 gulp.task('serve', ['build'], function () {
   plugins.connect.server({
     root: config.dist,
-    middleware: function(connect, opt) {
+    middleware: function (connect, opt) {
       return [compression()];
     }
   });
