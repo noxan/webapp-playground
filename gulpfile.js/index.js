@@ -4,6 +4,10 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var compression = require('compression');
+var transform = require('vinyl-transform');
+var browserify = require('browserify');
+var watchify = require('watchify');
+var path = require('path');
 
 var createBundle = require('./browserify').createBundle;
 var config = require('./config');
@@ -13,14 +17,28 @@ gulp.task('set-watch', function () {
   config.watch = true;
 });
 
-gulp.task('scripts', function () {
-  config.scripts.forEach(function (bundle) {
-    createBundle({
-      input: bundle,
-      output: bundle,
-      destination: config.dist,
-      extensions: ['.js']
+var bundler = function (options) {
+  return transform(function (filename) {
+    var b = browserify(filename, options);
+    if (config.watch) {
+      b = watchify(b);
+      b.on('update', bundle.bind(null, filename));
+    }
+    b.on('bundle', function () {
+      plugins.util.log("Script '" + plugins.util.colors.cyan(path.basename(filename)) + "' was browserified.");
     });
+    return b.bundle();
+  });
+};
+var bundle = function (filename) {
+  return gulp.src(filename)
+    .pipe(bundler(watchify.args))
+    .pipe(gulp.dest(config.dist));
+};
+
+gulp.task('scripts', function () {
+  config.scripts.forEach(function (filename) {
+    bundle(filename);
   });
 });
 
