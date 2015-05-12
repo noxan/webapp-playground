@@ -6,12 +6,17 @@
   var spinner = new Spinner().spin(document.body);
 
   var $css = function (cssList) {
+    var head = document.getElementsByTagName('head')[0];
     cssList.forEach(function (cssHref) {
-      var l = document.createElement('link');
-      l.rel = 'stylesheet';
-      l.href = cssHref;
-      var h = document.getElementsByTagName('head')[0];
-      h.parentNode.insertBefore(l, h);
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = cssHref;
+      link.media = 'only x';
+      head.parentNode.insertBefore(link, head);
+
+      setTimeout(function () {
+        link.media = "all";
+      });
     });
   };
 
