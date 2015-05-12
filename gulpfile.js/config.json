@@ -1,7 +1,7 @@
 {
   "basedir": "./src/",
   "scripts": ["./src/app.js", "./src/loader.js"],
-  "styles": ["./src/styles.styl"],
+  "styles": ["./src/styles.styl", "./src/loader.styl"],
   "templates": ["./src/index.jade"],
   "partials": ["./src/partials/**/*.jade"],
   "dist": "./dist/",
