@@ -1,6 +1,5 @@
 {
   "basedir": "./src/",
-  "loaders": ["./dist/loader.js"],
   "scripts": ["./src/app.js", "./src/loader.js"],
   "styles": ["./src/styles.styl"],
   "templates": ["./src/index.jade"],
