@@ -3,7 +3,7 @@
 
 module.exports = function (gulp, plugins, config) {
   return function () {
-    return gulp.src(config.partials, {base: './src/'})
+    return gulp.src(config.partials, {base: config.basedir})
       .pipe(plugins.plumber())
       .pipe(plugins.jade())
       .pipe(plugins.minifyHtml())
